@@ -1,7 +1,6 @@
 package com.techChirayu.Auth.Auth_Application.services;
 
 import com.techChirayu.Auth.Auth_Application.dtos.UserDto;
-import com.techChirayu.Auth.Auth_Application.entity.User;
 
 public interface UserService {
 

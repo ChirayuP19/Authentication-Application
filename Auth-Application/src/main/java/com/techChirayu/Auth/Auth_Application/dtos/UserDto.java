@@ -1,8 +1,6 @@
 package com.techChirayu.Auth.Auth_Application.dtos;
 
 import com.techChirayu.Auth.Auth_Application.entity.Provider;
-import com.techChirayu.Auth.Auth_Application.entity.Role;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
