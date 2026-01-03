@@ -3,7 +3,9 @@ package com.techChirayu.Auth.Auth_Application.services;
 import com.techChirayu.Auth.Auth_Application.dtos.UserDto;
 import com.techChirayu.Auth.Auth_Application.entity.Provider;
 import com.techChirayu.Auth.Auth_Application.entity.User;
+import com.techChirayu.Auth.Auth_Application.exceptions.ResourceNotFoundException;
 import com.techChirayu.Auth.Auth_Application.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ public class UserServiceImpl implements  UserService{
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public UserDto createUser(UserDto userDto) {
         if(userDto.getEmail()==null || userDto.getEmail().isBlank()){
             throw  new IllegalArgumentException("Email is requried");
@@ -32,7 +35,10 @@ public class UserServiceImpl implements  UserService{
 
     @Override
     public UserDto getUserByEmail(String email) {
-        return null;
+        User user = userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with given Email ID!!"));
+        return modelMapper.map(user,UserDto.class);
     }
 
     @Override
@@ -51,6 +57,7 @@ public class UserServiceImpl implements  UserService{
     }
 
     @Override
+
     public Iterable<UserDto> getAllUsers() {
         return userRepository
                 .findAll()
