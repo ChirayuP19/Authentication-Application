@@ -4,12 +4,15 @@ import com.techChirayu.Auth.Auth_Application.dtos.UserDto;
 import com.techChirayu.Auth.Auth_Application.entity.Provider;
 import com.techChirayu.Auth.Auth_Application.entity.User;
 import com.techChirayu.Auth.Auth_Application.exceptions.ResourceNotFoundException;
+import com.techChirayu.Auth.Auth_Application.helpers.UserHelper;
 import com.techChirayu.Auth.Auth_Application.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -43,17 +46,35 @@ public class UserServiceImpl implements  UserService{
 
     @Override
     public UserDto updateUser(UserDto userDto, String userId) {
-        return null;
+        UUID uuid = UserHelper.parseUUID(userId);
+        User existingUser=userRepository.findById(uuid).orElseThrow(()->new ResourceNotFoundException("User not found with given id"));
+        if(userDto.getName()!=null)
+            existingUser.setName(userDto.getName());
+        if(userDto.getImage()!=null)
+            existingUser.setImage(userDto.getImage());
+        if(userDto.getProvider()!=null)
+            existingUser.setProvider(userDto.getProvider());
+        existingUser.setEnable(userDto.isEnable());
+        if(userDto.getPassword()!=null)
+        existingUser.setPassword(userDto.getPassword());
+        User save = userRepository.save(existingUser);
+        return modelMapper.map(save,UserDto.class);
     }
 
     @Override
     public void deleteUser(String userId) {
-
+        UUID uId = UserHelper.parseUUID(userId);
+        User user = userRepository.findById(uId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with given ID"));
+        userRepository.delete(user);
     }
 
     @Override
     public UserDto getUserById(String userId) {
-        return null;
+
+        User user = userRepository.findById(UserHelper.parseUUID(userId)).orElseThrow(() -> new ResourceNotFoundException("User not found with given ID"));
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+        return userDto;
     }
 
     @Override
