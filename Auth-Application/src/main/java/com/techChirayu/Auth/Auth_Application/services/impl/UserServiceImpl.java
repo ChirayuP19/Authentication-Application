@@ -1,4 +1,4 @@
-package com.techChirayu.Auth.Auth_Application.services;
+package com.techChirayu.Auth.Auth_Application.services.impl;
 
 import com.techChirayu.Auth.Auth_Application.dtos.UserDto;
 import com.techChirayu.Auth.Auth_Application.entity.Provider;
@@ -6,20 +6,22 @@ import com.techChirayu.Auth.Auth_Application.entity.User;
 import com.techChirayu.Auth.Auth_Application.exceptions.ResourceNotFoundException;
 import com.techChirayu.Auth.Auth_Application.helpers.UserHelper;
 import com.techChirayu.Auth.Auth_Application.repositories.UserRepository;
+import com.techChirayu.Auth.Auth_Application.services.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements  UserService{
+public class UserServiceImpl implements UserService {
 
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+
 
     @Override
     @Transactional

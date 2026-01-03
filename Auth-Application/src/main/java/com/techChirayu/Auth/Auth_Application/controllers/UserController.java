@@ -2,7 +2,6 @@ package com.techChirayu.Auth.Auth_Application.controllers;
 
 import com.techChirayu.Auth.Auth_Application.dtos.UserDto;
 import com.techChirayu.Auth.Auth_Application.services.UserService;
-import com.techChirayu.Auth.Auth_Application.services.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
